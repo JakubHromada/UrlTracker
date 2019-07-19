@@ -97,7 +97,7 @@ namespace InfoCaster.Umbraco.UrlTracker.Repositories
                 ReloadForcedRedirectsCache();
         }
 
-        public static void AddGoneEntryByNodeId(int nodeId)
+        public static void AddGoneEntryByNodeId(int rootNodeId, int nodeId)
         {
             if (UmbracoContext.Current == null) // NiceUrl will throw an exception if UmbracoContext is null, and we'll be unable to retrieve the URL of the node
                 return;
@@ -119,8 +119,8 @@ namespace InfoCaster.Umbraco.UrlTracker.Repositories
             {
                 LoggingHelper.LogInformation("UrlTracker Repository | Inserting 410 Gone mapping for node with id: {0}", nodeId);
 
-                query = "INSERT INTO icUrlTracker (RedirectNodeId, OldUrl, RedirectHttpCode, Notes) VALUES (@redirectNodeId, @oldUrl, 410, @notes)";
-                _sqlHelper.ExecuteNonQuery(query, _sqlHelper.CreateParameter("redirectNodeId", nodeId), _sqlHelper.CreateStringParameter("oldUrl", url), _sqlHelper.CreateStringParameter("notes", "Node removed"));
+                query = "INSERT INTO icUrlTracker (RedirectRootNodeId, RedirectNodeId, OldUrl, RedirectHttpCode, Notes) VALUES (@rootNodeId, @redirectNodeId, @oldUrl, 410, @notes)";
+                _sqlHelper.ExecuteNonQuery(query, _sqlHelper.CreateParameter("rootNodeId", rootNodeId), _sqlHelper.CreateParameter("redirectNodeId", nodeId), _sqlHelper.CreateStringParameter("oldUrl", url), _sqlHelper.CreateStringParameter("notes", "Node removed"));
             }
             else
                 LoggingHelper.LogInformation("UrlTracker Repository | Skipping 410 Gone mapping for node with id: {0} (already exists)", nodeId);

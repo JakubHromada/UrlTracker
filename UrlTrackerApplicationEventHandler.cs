@@ -176,7 +176,8 @@ namespace InfoCaster.Umbraco.UrlTracker
             try
 #endif
             {
-                UrlTrackerRepository.AddGoneEntryByNodeId(doc.Id);
+                Node node = new Node(doc.Id);
+                UrlTrackerRepository.AddGoneEntryByNodeId(node.GetDomainRootNode().Id, doc.Id);
             }
 #if !DEBUG
             catch (Exception ex)

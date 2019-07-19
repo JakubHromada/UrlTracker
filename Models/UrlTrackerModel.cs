@@ -115,7 +115,7 @@ namespace InfoCaster.Umbraco.UrlTracker.Models
                     }
                 }
 
-                if (!RedirectRootNode.NiceUrl.EndsWith("#") && RedirectNodeId.HasValue)
+                if (RedirectRootNode.NiceUrl != null && !RedirectRootNode.NiceUrl.EndsWith("#") && RedirectNodeId.HasValue)
                 {
 
                     List<UrlTrackerDomain> domains = UmbracoHelper.GetDomains();
